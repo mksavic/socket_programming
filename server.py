@@ -16,9 +16,15 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.data = self.request.recv(1024).strip().decode('utf-8')
         print('{} wrote: {}'.format(self.client_address[0], self.data))
 
+        # Check to see if string 'SECRET' is in received data.
         if 'SECRET' in self.data:
+            # Use regex to extract all the digits from received data.
             digits = ''.join(re.findall('\d+', self.data))
+
+            # Count all the digits from received data.
             count = sum(c.isdigit() for c in self.data)
+
+            # Reply to the client.
             ret = 'Digits: {} Count: {}'.format(digits, count).encode('utf-8')
             self.request.sendall(ret)
 
@@ -31,4 +37,6 @@ if __name__ == '__main__':
         # Activate the server; this will keep running until you
         # interrupt the program with Ctrl-C
         server.serve_forever()
+
+        # Close the connection with the client.
         server.server_close()
