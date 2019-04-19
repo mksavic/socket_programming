@@ -15,6 +15,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.data = self.request.recv(1024).strip().decode('utf-8')
         print('{} wrote: {}'.format(self.client_address[0], self.data))
 
+        # Write received data to output.txt.
         with open('output.txt', 'a') as f:
             f.write(self.data + '\n')
 
